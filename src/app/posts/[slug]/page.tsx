@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Calendar, User, Tag, ArrowLeft, Github } from 'lucide-react';
+import { Calendar, User, Tag, ArrowLeft, GitFork } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || '';
@@ -174,7 +174,7 @@ export default async function PostPage({
               <h1 className="post-main-title flex-1">{post.title}</h1>
               {post.source === 'github' && (
                 <span className="inline-flex items-center gap-1 px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm">
-                  <Github className="w-4 h-4" /> Obsidian
+                  <GitFork className="w-4 h-4" /> Obsidian
                 </span>
               )}
             </div>

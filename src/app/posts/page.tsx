@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { Search, Grid, List, Clock, User, Github, Database } from 'lucide-react';
+import { Search, Grid, List, Clock, User, GitFork, Database } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || '';
@@ -155,7 +155,7 @@ export default function PostsPage() {
                       onClick={() => setDataSource('github')}
                       className={`px-3 py-1 rounded text-sm flex items-center gap-1 ${dataSource === 'github' ? 'bg-indigo-600 text-white' : 'bg-gray-100'}`}
                     >
-                      <Github className="w-3 h-3" /> Obsidian
+                      <GitFork className="w-3 h-3" /> Obsidian
                     </button>
                     <button
                       onClick={() => setDataSource('api')}
@@ -275,7 +275,7 @@ export default function PostsPage() {
               <h3 className="font-bold mb-2">📝 Obsidian 同步</h3>
               <p className="text-sm text-white/80 mb-4">在 Obsidian 的 Blog 文件夹中编辑 Markdown，自动同步到博客！</p>
               <a href="https://github.com/jhon-bor/obsidian-blog" target="_blank" className="inline-flex items-center gap-2 px-4 py-2 bg-white text-indigo-600 rounded-lg text-sm font-medium hover:bg-gray-100">
-                <Github className="w-4 h-4" /> 查看 GitHub
+                <GitFork className="w-4 h-4" /> 查看 GitHub
               </a>
             </div>
           </div>
