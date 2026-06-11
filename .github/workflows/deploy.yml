@@ -9,9 +9,6 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      statuses: write
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -37,4 +34,3 @@ jobs:
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           projectName: blog-frontend-bxn
           directory: out
-          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
