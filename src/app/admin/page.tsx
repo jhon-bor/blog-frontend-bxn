@@ -13,7 +13,9 @@ import {
   LogOut,
   Plus,
   Search,
-  MoreHorizontal
+  MoreHorizontal,
+  BarChart3,
+  TrendingUp
 } from 'lucide-react';
 
 const menuItems = [
@@ -24,6 +26,11 @@ const menuItems = [
   { icon: Image, label: '媒体库', href: '/admin/media' },
   { icon: Users, label: '用户', href: '/admin/users' },
   { icon: Settings, label: '设置', href: '/admin/settings' },
+];
+
+const dataMenuItems = [
+  { icon: BarChart3, label: '数据分析', href: '/admin/analytics', color: 'text-blue-400' },
+  { icon: TrendingUp, label: '关键词研究', href: '/admin/keywords', color: 'text-green-400' },
 ];
 
 // Mock data
@@ -57,6 +64,23 @@ export default function AdminPage() {
               key={item.href}
               href={item.href}
               className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-800 transition-colors"
+            >
+              <item.icon className="w-5 h-5" />
+              {sidebarOpen && <span>{item.label}</span>}
+            </Link>
+          ))}
+          
+          {/* Data Section */}
+          {sidebarOpen && (
+            <div className="pt-4 pb-2">
+              <p className="px-3 text-xs text-gray-500 uppercase tracking-wider">数据分析</p>
+            </div>
+          )}
+          {dataMenuItems.map((item) => (
+            <Link 
+              key={item.href}
+              href={item.href}
+              className={`flex items-center gap-3 p-3 rounded-lg hover:bg-gray-800 transition-colors ${item.color || ''}`}
             >
               <item.icon className="w-5 h-5" />
               {sidebarOpen && <span>{item.label}</span>}
