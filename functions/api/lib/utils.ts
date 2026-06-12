@@ -47,7 +47,7 @@ export function slugify(text: string): string {
         '出': 'chu', '入': 'ru', '前': 'qian', '后': 'hou', '左': 'zuo',
         '右': 'you', '上': 'shang', '下': 'xia', '白': 'bai', '黑': 'hei',
         '红': 'hong', '绿': 'lv', '蓝': 'lan', '黄': 'huang', '紫': 'zi',
-        '年': 'nian', '月': 'yue', '周': 'zhou', '时': 'shi', '分': 'fen',
+        '年': 'nian', '月': 'yue', '周': 'zhou',
       };
       return pinyinMap[char] || char;
     })
