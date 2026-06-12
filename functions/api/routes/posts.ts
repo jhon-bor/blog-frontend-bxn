@@ -59,7 +59,7 @@ export default {
 
     // POST /api/posts - Create post
     if (request.method === 'POST') {
-      const body = await request.json();
+      const body = await request.json() as any;
       const { title, slug, content, excerpt, coverImage, published, categoryId, tagIds } = body;
 
       if (!title) return error('标题不能为空', 400);
@@ -89,7 +89,7 @@ export default {
 
     // PUT /api/posts - Update post
     if (request.method === 'PUT') {
-      const body = await request.json();
+      const body = await request.json() as any;
       const { id, title, slug, content, excerpt, coverImage, published, categoryId, tagIds } = body;
 
       if (!id) return error('缺少文章ID', 400);

@@ -73,7 +73,7 @@ export default {
 
     // POST /api/trends - Log a search keyword
     if (request.method === 'POST') {
-      const body = await request.json();
+      const body = await request.json() as any;
       const { keyword, result_count } = body;
 
       if (!keyword) return error('关键词不能为空', 400);

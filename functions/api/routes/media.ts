@@ -4,10 +4,11 @@ import { json, error, generateId } from '../lib/utils';
 export default {
   async handle(path: string, request: Request, env: Env): Promise<Response> {
     const url = new URL(request.url);
+    const apiUrl = `https://api.cloudinary.com/v1_1/${env.CLOUDINARY_SECRET_NAME}/image/upload`;
 
     // GET /api/media - List media
     if (request.method === 'GET') {
-      const result = await env.DB.prepare('SELECT * FROM media ORDER BY uploaded_at DESC LIMIT 100').all();
+      const result = await env.DB.prepare('SELECT * FROM media ORDER BY uploaded_at DESC LIMIT 100').all() as any;
       return json({ files: result.results });
     }
 
@@ -34,8 +35,6 @@ export default {
 
       // Build params for signature
       const params = `folder=${folder}&public_id=${publicId}&timestamp=${timestamp}`;
-      // We'll use unsigned upload
-      const apiUrl = `https://api.cloudinary.com/v1_1/${env.CLOUDINARY_SECRET_NAME}/image/upload`;
 
       const uploadResponse = await fetch(apiUrl, {
         method: 'POST',
@@ -54,7 +53,7 @@ export default {
         return error(`Cloudinary上传失败: ${errText}`, 500);
       }
 
-      const result = await uploadResponse.json();
+      const result = await uploadResponse.json() as any;
       const fileUrl = result.secure_url;
 
       // Save to database

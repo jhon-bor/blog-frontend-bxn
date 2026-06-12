@@ -18,7 +18,7 @@ export default {
     }
 
     if (request.method === 'POST') {
-      const body = await request.json();
+      const body = await request.json() as any;
       const { name, slug } = body;
       if (!name) return error('标签名称不能为空', 400);
 
@@ -31,7 +31,7 @@ export default {
     }
 
     if (request.method === 'PUT') {
-      const body = await request.json();
+      const body = await request.json() as any;
       const { id, name, slug } = body;
       if (!id) return error('缺少标签ID', 400);
 

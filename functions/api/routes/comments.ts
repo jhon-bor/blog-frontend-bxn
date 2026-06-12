@@ -23,7 +23,7 @@ export default {
 
     // POST /api/comments - Create comment
     if (request.method === 'POST') {
-      const body = await request.json();
+      const body = await request.json() as any;
       const { post_id, author_name, author_email, content } = body;
 
       if (!post_id || !author_name || !content) {
@@ -42,7 +42,7 @@ export default {
 
     // PUT /api/comments - Approve/reject comment
     if (request.method === 'PUT') {
-      const body = await request.json();
+      const body = await request.json() as any;
       const { id, approved } = body;
       if (!id) return error('缺少评论ID', 400);
 

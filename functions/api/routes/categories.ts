@@ -19,7 +19,7 @@ export default {
 
     // POST /api/categories - Create
     if (request.method === 'POST') {
-      const body = await request.json();
+      const body = await request.json() as any;
       const { name, slug, description } = body;
 
       if (!name) return error('分类名称不能为空', 400);
@@ -38,7 +38,7 @@ export default {
 
     // PUT /api/categories - Update
     if (request.method === 'PUT') {
-      const body = await request.json();
+      const body = await request.json() as any;
       const { id, name, slug, description } = body;
 
       if (!id) return error('缺少分类ID', 400);

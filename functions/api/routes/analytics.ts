@@ -170,7 +170,7 @@ export default {
 
     // POST /api/analytics/track - Track a page view
     if (request.method === 'POST') {
-      const body = await request.json();
+      const body = await request.json() as any;
       const { path, referrer, user_agent, country, city } = body;
 
       await env.DB.prepare(`
