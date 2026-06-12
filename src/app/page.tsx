@@ -19,6 +19,23 @@ interface Post {
   createdAt: string;
 }
 
+// Transform API response to match frontend expectations
+function transformPost(apiPost: any): Post {
+  return {
+    id: apiPost.id,
+    title: apiPost.title,
+    slug: apiPost.slug,
+    excerpt: apiPost.excerpt || null,
+    coverImage: apiPost.cover_image || null,
+    author: { name: 'Admin' },
+    category: apiPost.category_name 
+      ? { name: apiPost.category_name, slug: apiPost.category_slug || '' } 
+      : null,
+    tags: apiPost.tags || [],
+    createdAt: apiPost.created_at,
+  };
+}
+
 interface Category {
   id: string;
   name: string;
@@ -41,7 +58,7 @@ export default function HomePage() {
           fetch(`${API_BASE}/api/posts?limit=12`).then(r => r.json()).catch(() => ({ posts: [] })) as Promise<any>,
           fetch(`${API_BASE}/api/categories`).then(r => r.json()).catch(() => ({ categories: [] })) as Promise<any>
         ]);
-        const allPosts = (postsRes as any).posts || [];
+        const allPosts = ((postsRes as any).posts || []).map(transformPost);
         setFeaturedPosts(allPosts.slice(0, 3));
         setGridPosts(allPosts.slice(3, 7));
         setSidebarPosts(allPosts.slice(0, 4));

@@ -56,7 +56,9 @@ export default function PostsPage() {
         const localPosts = (localData.posts || []).map((p: any) => ({
           ...p,
           source: 'api' as const,
-          createdAt: p.createdAt || p.date
+          createdAt: p.createdAt || p.created_at || p.date,
+          category: p.category_name ? { name: p.category_name, slug: p.category_slug || '' } : null,
+          author: p.author || { name: 'Admin' }
         }));
         
         // 处理 GitHub 文件列表
