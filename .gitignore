@@ -9,3 +9,4 @@ out/
 # Wrangler cache and build artifacts
 .wrangler/
 _worker.bundle
+out/

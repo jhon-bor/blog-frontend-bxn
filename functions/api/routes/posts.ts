@@ -1,6 +1,70 @@
 import { Env } from '../env';
 import { json, error, generateId, slugify, getQueryParams } from '../lib/utils';
 
+// GitHub fallback: fetch posts from GitHub when D1 is empty
+async function fetchFromGitHub(env: Env): Promise<any[]> {
+  try {
+    const headers: Record<string, string> = {
+      'Accept': 'application/json',
+      'User-Agent': 'blog-frontend/1.0'
+    };
+    if (env.GITHUB_TOKEN) {
+      headers['Authorization'] = `token ${env.GITHUB_TOKEN}`;
+    }
+
+    const res = await fetch(
+      'https://api.github.com/repos/jhon-bor/obsidian-blog/contents/Blog',
+      { headers }
+    );
+
+    if (!res.ok) return [];
+
+    const data = await res.json() as any[];
+    const mdFiles = Array.isArray(data) 
+      ? data.filter((f) => f.name?.endsWith('.md'))
+      : [];
+
+    // Fetch each file's content
+    const posts = await Promise.all(
+      mdFiles.slice(0, 20).map(async (file: any) => {
+        try {
+          const contentRes = await fetch(file.download_url);
+          const content = await contentRes.text();
+          const titleMatch = content.match(/^title:\s*(.+)$/m);
+          const dateMatch = content.match(/^date:\s*(.+)$/m);
+          const categoryMatch = content.match(/^category:\s*(.+)$/m);
+          const excerptMatch = content.match(/^excerpt:\s*(.+)$/m);
+          
+          // Generate slug from filename
+          const slug = file.name.replace('.md', '').replace(/^\d{4}-\d{2}-\d{2}-/, '');
+          
+          return {
+            id: file.sha,
+            title: titleMatch ? titleMatch[1] : slug,
+            slug: slug,
+            content: content,
+            excerpt: excerptMatch ? excerptMatch[1] : content.substring(0, 200).replace(/[#*`]/g, ''),
+            cover_image: '',
+            published: 1,
+            created_at: dateMatch ? dateMatch[1] : file.name.substring(0, 10),
+            updated_at: dateMatch ? dateMatch[1] : file.name.substring(0, 10),
+            category_name: categoryMatch ? categoryMatch[1] : '未分类',
+            category_slug: categoryMatch ? categoryMatch[1] : 'uncategorized',
+            tags: [],
+            view_count: 0,
+          };
+        } catch {
+          return null;
+        }
+      })
+    );
+
+    return posts.filter(Boolean);
+  } catch {
+    return [];
+  }
+}
+
 export default {
   async handle(path: string, request: Request, env: Env): Promise<Response> {
     const url = new URL(request.url);
@@ -45,7 +109,7 @@ export default {
       const result = await env.DB.prepare(query).bind(...bindings).all();
       
       // Parse tag arrays
-      const posts = result.results.map((p: any) => ({
+      let posts = result.results.map((p: any) => ({
         ...p,
         tags: p.tag_names ? p.tag_names.split(',').map((name: string, i: number) => ({
           name,
@@ -53,6 +117,14 @@ export default {
         })) : [],
         published: Boolean(p.published),
       }));
+
+      // Fallback to GitHub if D1 is empty
+      if (posts.length === 0 && !category && !tag) {
+        const githubPosts = await fetchFromGitHub(env);
+        if (githubPosts.length > 0) {
+          posts = githubPosts;
+        }
+      }
 
       return json({ posts, total: posts.length });
     }

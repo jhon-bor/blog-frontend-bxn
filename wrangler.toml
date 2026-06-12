@@ -8,4 +8,4 @@ database_name = "blog-cms"
 database_id = "4e1ccc3e-2ac3-4922-9cd3-cc24852ab886"
 
 [vars]
-NEXT_PUBLIC_API_URL = "/api"
+NEXT_PUBLIC_API_URL = ""
