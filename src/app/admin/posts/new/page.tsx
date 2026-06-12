@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { ArrowLeft, Save, Image as ImageIcon, Upload, X, Loader2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || '';
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'https://aipres.pages.dev';
 
 interface Category {
   id: string;

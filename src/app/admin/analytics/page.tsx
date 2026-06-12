@@ -17,7 +17,7 @@ import {
   ArrowDownRight
 } from 'lucide-react';
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || '';
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'https://aipres.pages.dev';
 
 interface StatCard {
   label: string;

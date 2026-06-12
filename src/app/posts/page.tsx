@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { Search, Grid, List, Clock, User, GitFork, Database } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || '';
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'https://aipres.pages.dev';
 
 interface Post {
   id: string;

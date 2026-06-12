@@ -5,7 +5,7 @@ import { Clock, User } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { useLanguage } from '@/lib/LanguageContext';
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || '';
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'https://aipres.pages.dev';
 
 interface Post {
   id: string;

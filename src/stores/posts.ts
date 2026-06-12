@@ -31,7 +31,7 @@ interface PostsState {
   deletePost: (id: string) => Promise<void>;
 }
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || '';
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'https://aipres.pages.dev';
 
 export const usePostsStore = create<PostsState>((set, get) => ({
   posts: [],

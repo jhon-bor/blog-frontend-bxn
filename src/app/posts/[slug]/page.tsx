@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { Calendar, User, Tag, ArrowLeft, GitFork } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || '';
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'https://aipres.pages.dev';
 
 interface Post {
   id: string;
