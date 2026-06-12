@@ -21,5 +21,7 @@ if grep -q "Failed to compile" build.log; then
 fi
 
 rm -f build.log
-echo '/* /index.html 200' > out/_redirects
+
+# Remove the wildcard redirect that causes infinite loop
+rm -f out/_redirects
 echo "Build complete."
