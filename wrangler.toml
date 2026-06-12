@@ -2,5 +2,10 @@ name = "aipres"
 compatibility_date = "2024-01-01"
 pages_build_output_dir = "out"
 
+[[d1_databases]]
+binding = "DB"
+database_name = "blog-cms"
+database_id = "4e1ccc3e-2ac3-4922-9cd3-cc24852ab886"
+
 [vars]
-NEXT_PUBLIC_API_URL = "https://backend-production-7b56.up.railway.app"
+NEXT_PUBLIC_API_URL = "/api"
