@@ -91,12 +91,25 @@ async function getRelatedPosts(categorySlug: string, excludeSlug: string): Promi
 }
 
 export async function generateStaticParams() {
+  // 默认的示例文章 slug（用于静态导出）
+  const defaultSlugs = [
+    'welcome-to-my-blog',
+    'introduction-to-typescript',
+    'building-modern-web-applications',
+    'the-art-of-writing',
+    'deploying-to-the-cloud'
+  ];
+  
   try {
     const res = await fetch(`${API_BASE}/api/posts?limit=100`, { cache: 'no-store' });
     const data = await res.json() as any;
-    return (data.posts || []).map((post: { slug: string }) => ({ slug: post.slug }));
+    const apiSlugs = (data.posts || []).map((post: { slug: string }) => post.slug);
+    // 合并 API 返回的 slug 和默认 slug
+    const allSlugs = [...new Set([...apiSlugs, ...defaultSlugs])];
+    return allSlugs.map(slug => ({ slug }));
   } catch {
-    return [];
+    // API 不可用时，使用默认 slug
+    return defaultSlugs.map(slug => ({ slug }));
   }
 }
 
