@@ -44,7 +44,7 @@ export default function SearchPage() {
       const res = await fetch(
         `/api/search?q=${encodeURIComponent(query)}&engine=${engine}`
       );
-      const data = await res.json();
+      const data = await res.json() as any;
       
       setResults(data.hits || []);
       setTotal(data.total || 0);

@@ -43,7 +43,7 @@ export default function KeywordsPage() {
     setLoading(true);
     try {
       const res = await fetch(`${API_BASE}/api/trends?q=${encodeURIComponent(searchQuery)}&days=30`);
-      const data = await res.json();
+      const data = await res.json() as any;
       setSearchResult(data);
     } catch (e) {
       console.error('Search failed:', e);
@@ -58,7 +58,7 @@ export default function KeywordsPage() {
     setLoading(true);
     try {
       const res = await fetch(`${API_BASE}/api/trends?type=compare&q=${keywords.join(',')}`);
-      const data = await res.json();
+      const data = await res.json() as any;
       setCompareResult(data);
     } catch (e) {
       console.error('Compare failed:', e);
@@ -70,7 +70,7 @@ export default function KeywordsPage() {
   async function loadSuggestions() {
     try {
       const res = await fetch(`${API_BASE}/api/trends?type=suggestions`);
-      const data = await res.json();
+      const data = await res.json() as any;
       setSuggestions(data.suggestions || []);
     } catch (e) {
       console.error('Failed to load suggestions:', e);

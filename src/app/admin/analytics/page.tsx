@@ -63,9 +63,9 @@ export default function AnalyticsPage() {
       ]);
 
       setStats(statsRes);
-      setPages(pagesRes?.pages || []);
-      setKeywords(trendsRes?.keywords || []);
-      setTrends(trendsRes);
+      setPages((pagesRes as any)?.pages || []);
+      setKeywords((trendsRes as any)?.keywords || []);
+      setTrends(trendsRes as any);
     } catch (e) {
       console.error('Failed to fetch analytics:', e);
     } finally {

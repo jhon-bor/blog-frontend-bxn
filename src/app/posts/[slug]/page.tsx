@@ -23,7 +23,7 @@ async function getPost(slug: string, source?: string): Promise<Post | null> {
   // 首先尝试本地 API
   try {
     const res = await fetch(`${API_BASE}/api/posts/${slug}`, { cache: 'no-store' });
-    const data = await res.json();
+    const data = await res.json() as any;
     if (data.post) {
       return { ...data.post, source: 'api' as const };
     }
@@ -34,7 +34,7 @@ async function getPost(slug: string, source?: string): Promise<Post | null> {
   // 如果本地没有，尝试从 GitHub 获取（通过代理 API）
   try {
     const listRes = await fetch('/api/github-posts', { cache: 'no-store' });
-    const data = await listRes.json();
+    const data = await listRes.json() as any;
     const files = data.files || [];
     
     const file = Array.isArray(files) ? files.find((f: any) => f.name === `${slug}.md`) : null;
@@ -83,7 +83,7 @@ async function getPost(slug: string, source?: string): Promise<Post | null> {
 async function getRelatedPosts(categorySlug: string, excludeSlug: string): Promise<Post[]> {
   try {
     const res = await fetch(`${API_BASE}/api/posts?category=${categorySlug}&limit=4`, { cache: 'no-store' });
-    const data = await res.json();
+    const data = await res.json() as any;
     return (data.posts || []).filter((p: Post) => p.slug !== excludeSlug).slice(0, 3);
   } catch {
     return [];
@@ -93,7 +93,7 @@ async function getRelatedPosts(categorySlug: string, excludeSlug: string): Promi
 export async function generateStaticParams() {
   try {
     const res = await fetch(`${API_BASE}/api/posts?limit=100`, { cache: 'no-store' });
-    const data = await res.json();
+    const data = await res.json() as any;
     return (data.posts || []).map((post: { slug: string }) => ({ slug: post.slug }));
   } catch {
     return [];

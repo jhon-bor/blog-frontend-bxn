@@ -49,7 +49,7 @@ export default function PostsPage() {
           .then(r => r.json())
           .catch(() => ({ files: [] }));
 
-        const [localData, githubData] = await Promise.all([localRes, githubRes]);
+        const [localData, githubData] = await Promise.all([localRes, githubRes]) as [{ posts: any[] }, { files: any[] }];
         const githubFiles = githubData.files || [];
 
         // 合并文章
@@ -82,7 +82,7 @@ export default function PostsPage() {
         // 获取分类
         try {
           const catsRes = await fetch(`${API_BASE}/api/categories`);
-          const catsData = await catsRes.json();
+          const catsData = await catsRes.json() as any;
           setCategories(catsData.categories || []);
         } catch {
           setCategories([]);

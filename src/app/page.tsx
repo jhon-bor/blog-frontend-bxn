@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { Clock, User } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { useLanguage } from '@/lib/LanguageContext';
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || '';
 
@@ -26,6 +27,7 @@ interface Category {
 }
 
 export default function HomePage() {
+  const { t } = useLanguage();
   const [featuredPosts, setFeaturedPosts] = useState<Post[]>([]);
   const [gridPosts, setGridPosts] = useState<Post[]>([]);
   const [sidebarPosts, setSidebarPosts] = useState<Post[]>([]);
@@ -36,14 +38,14 @@ export default function HomePage() {
     async function fetchData() {
       try {
         const [postsRes, catsRes] = await Promise.all([
-          fetch(`${API_BASE}/api/posts?limit=12`).then(r => r.json()).catch(() => ({ posts: [] })),
-          fetch(`${API_BASE}/api/categories`).then(r => r.json()).catch(() => ({ categories: [] }))
+          fetch(`${API_BASE}/api/posts?limit=12`).then(r => r.json()).catch(() => ({ posts: [] })) as Promise<any>,
+          fetch(`${API_BASE}/api/categories`).then(r => r.json()).catch(() => ({ categories: [] })) as Promise<any>
         ]);
-        const allPosts = postsRes.posts || [];
+        const allPosts = (postsRes as any).posts || [];
         setFeaturedPosts(allPosts.slice(0, 3));
         setGridPosts(allPosts.slice(3, 7));
         setSidebarPosts(allPosts.slice(0, 4));
-        setCategories(catsRes.categories || []);
+        setCategories((catsRes as any).categories || []);
       } catch (e) {
         console.error('Failed to fetch data:', e);
       } finally {
@@ -74,7 +76,7 @@ export default function HomePage() {
             {/* Main Banner */}
             <div className="banner-main-part">
               <div className="title-heading">
-                <h3 className="section-title">今日焦点</h3>
+                <h3 className="section-title">{t('latest')}</h3>
                 <Link href="/posts" className="text-indigo-600 hover:text-indigo-700 font-medium text-sm">查看全部 →</Link>
               </div>
               <div className="banner-main-wrap">
@@ -108,7 +110,7 @@ export default function HomePage() {
                             <p className="post-excerpt">{post.excerpt}</p>
                           )}
                           <div className="post-meta">
-                            <span className="byline flex items-center gap-1"><User className="w-3 h-3" />{post.author?.name || '未知作者'}</span>
+                            <span className="byline flex items-center gap-1"><User className="w-3 h-3" />{post.author?.name || 'Admin'}</span>
                             <span className="flex items-center gap-1"><Clock className="w-3 h-3" />{formatDate(post.createdAt)}</span>
                           </div>
                         </div>
@@ -117,8 +119,8 @@ export default function HomePage() {
                   ))
                 ) : (
                   <div className="col-span-2 text-center py-12 bg-white rounded-xl border border-gray-100">
-                    <p className="text-gray-500 mb-4">暂无文章</p>
-                    <Link href="/admin/posts/new" className="btn btn-primary">发布文章</Link>
+                    <p className="text-gray-500 mb-4">{t('no_results')}</p>
+                    <Link href="/admin/posts/new" className="btn btn-primary">{t('articles')}</Link>
                   </div>
                 )}
               </div>
@@ -127,7 +129,7 @@ export default function HomePage() {
             {/* Editors Choice / Featured Posts */}
             <div className="featured-posts">
               <div className="title-heading">
-                <h3 className="section-title">编辑精选</h3>
+                <h3 className="section-title">{t('articles')}</h3>
               </div>
               <div className="featured-posts-wrap">
                 {sidebarPosts.slice(0, 3).map((post) => (
@@ -164,7 +166,7 @@ export default function HomePage() {
         <div className="section-wrapper">
           <div className="main-container-wrap">
             <div className="title-heading">
-              <h3 className="section-title">最新文章</h3>
+              <h3 className="section-title">{t('latest')}</h3>
               <Link href="/posts" className="text-indigo-600 hover:text-indigo-700 font-medium text-sm">查看全部 →</Link>
             </div>
             <div className="grid-wrap">
@@ -194,9 +196,9 @@ export default function HomePage() {
                         <h2 className="entry-title">
                           <Link href={`/posts/${post.slug}`}>{post.title}</Link>
                         </h2>
-                        <p className="post-excerpt">{post.excerpt || '暂无摘要'}</p>
+                        <p className="post-excerpt">{post.excerpt || ''}</p>
                         <div className="post-meta">
-                          <span className="byline">{post.author?.name || '未知'}</span>
+                          <span className="byline">{post.author?.name || 'Admin'}</span>
                           <span className="flex items-center gap-1"><Clock className="w-3 h-3" />{formatDate(post.createdAt)}</span>
                         </div>
                       </div>
@@ -205,7 +207,7 @@ export default function HomePage() {
                 ))
               ) : (
                 <div className="col-span-4 text-center py-12 bg-white rounded-xl border border-gray-100">
-                  <p className="text-gray-500">暂无文章</p>
+                  <p className="text-gray-500">{t('no_results')}</p>
                 </div>
               )}
             </div>
@@ -220,7 +222,7 @@ export default function HomePage() {
             {/* Main Widget Area */}
             <div className="main-widget-area">
               <div className="title-heading">
-                <h3 className="section-title">热门文章</h3>
+                <h3 className="section-title">{t('articles')}</h3>
               </div>
               <div className="space-y-6">
                 {loading ? (
@@ -248,18 +250,18 @@ export default function HomePage() {
                         <h2 className="entry-title text-lg">
                           <Link href={`/posts/${post.slug}`}>{post.title}</Link>
                         </h2>
-                        <p className="post-excerpt">{post.excerpt || '暂无摘要'}</p>
+                        <p className="post-excerpt">{post.excerpt || ''}</p>
                         <div className="post-meta">
-                          <span className="byline">{post.author?.name || '未知'}</span>
+                          <span className="byline">{post.author?.name || 'Admin'}</span>
                           <span className="flex items-center gap-1"><Clock className="w-3 h-3" />{formatDate(post.createdAt)}</span>
                         </div>
-                        <Link href={`/posts/${post.slug}`} className="read-more-btn">阅读更多 →</Link>
+                        <Link href={`/posts/${post.slug}`} className="read-more-btn">{t('read_more')} →</Link>
                       </div>
                     </article>
                   ))
                 ) : (
                   <div className="text-center py-12 bg-white rounded-xl border border-gray-100">
-                    <p className="text-gray-500">暂无文章</p>
+                    <p className="text-gray-500">{t('no_results')}</p>
                   </div>
                 )}
               </div>
@@ -269,10 +271,10 @@ export default function HomePage() {
             <div className="secondary-widgets-area">
               {/* Categories Widget */}
               <div className="widget">
-                <h3 className="widget-title">📁 分类</h3>
+                <h3 className="widget-title">📁 {t('categories')}</h3>
                 <ul className="space-y-2">
                   {loading ? (
-                    <li className="text-gray-500">加载中...</li>
+                    <li className="text-gray-500">Loading...</li>
                   ) : categories.length > 0 ? (
                     categories.map((cat) => (
                       <li key={cat.slug} className="flex items-center justify-between py-2 border-b border-gray-100 last:border-0">
@@ -285,23 +287,19 @@ export default function HomePage() {
                       </li>
                     ))
                   ) : (
-                    <li className="text-gray-500">暂无分类</li>
+                    <li className="text-gray-500">{t('no_results')}</li>
                   )}
                 </ul>
               </div>
 
               {/* Tags Widget */}
               <div className="widget">
-                <h3 className="widget-title">🏷️ 热门标签</h3>
+                <h3 className="widget-title">🏷️ {t('categories')}</h3>
                 <div className="tag-cloud">
-                  <Link href="/tag/tech">#技术</Link>
-                  <Link href="/tag/product">#产品</Link>
-                  <Link href="/tag/life">#生活</Link>
-                  <Link href="/tag/news">#资讯</Link>
-                  <Link href="/tag/tutorial">#教程</Link>
-                  <Link href="/tag/ai">#AI</Link>
-                  <Link href="/tag/web">#Web</Link>
-                  <Link href="/tag/mobile">#移动</Link>
+                  <Link href="/tag/tech">#{t('tech_tutorials')}</Link>
+                  <Link href="/tag/product">#{t('product_thinking')}</Link>
+                  <Link href="/tag/life">#{t('life_insights')}</Link>
+                  <Link href="/tag/news">#{t('industry_news')}</Link>
                 </div>
               </div>
 

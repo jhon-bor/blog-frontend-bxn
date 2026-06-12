@@ -34,11 +34,11 @@ export const useAuthStore = create<AuthState>()(
         });
         
         if (!res.ok) {
-          const error = await res.json();
+          const error = await res.json() as any;
           throw new Error(error.message || 'Login failed');
         }
 
-        const data = await res.json();
+        const data = await res.json() as any;
         set({ user: data.user, token: data.token, isAuthenticated: true });
       },
 
@@ -50,11 +50,11 @@ export const useAuthStore = create<AuthState>()(
         });
 
         if (!res.ok) {
-          const error = await res.json();
+          const error = await res.json() as any;
           throw new Error(error.message || 'Registration failed');
         }
 
-        const data = await res.json();
+        const data = await res.json() as any;
         set({ user: data.user, token: data.token, isAuthenticated: true });
       },
 

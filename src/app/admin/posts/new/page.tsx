@@ -44,8 +44,8 @@ export default function NewPostPage() {
     async function fetchData() {
       try {
         const [catsRes, tagsRes] = await Promise.all([
-          fetch(`${API_BASE}/api/categories`).then(r => r.json()),
-          fetch(`${API_BASE}/api/tags`).then(r => r.json())
+          fetch(`${API_BASE}/api/categories`).then(r => r.json()) as Promise<any>,
+          fetch(`${API_BASE}/api/tags`).then(r => r.json()) as Promise<any>
         ]);
         setCategories(catsRes.categories || []);
         setTags(tagsRes.tags || []);
@@ -103,7 +103,7 @@ export default function NewPostPage() {
         setMessage({ type: 'success', text: '文章发布成功！' });
         setTimeout(() => router.push('/posts'), 1500);
       } else {
-        const error = await res.json();
+        const error = await res.json() as any;
         setMessage({ type: 'error', text: `发布失败: ${JSON.stringify(error)}` });
       }
     } catch (e) {
@@ -136,7 +136,7 @@ export default function NewPostPage() {
       });
 
       if (res.ok) {
-        const data = await res.json();
+        const data = await res.json() as any;
         setFormData(prev => ({ ...prev, coverImage: data.url }));
         setMessage({ type: 'success', text: '图片上传成功！' });
       } else {

@@ -54,7 +54,7 @@ export const usePostsStore = create<PostsState>((set, get) => ({
       const res = await fetch(`${API_BASE}/api/posts?${searchParams}`);
       if (!res.ok) throw new Error('Failed to fetch posts');
 
-      const data = await res.json();
+      const data = await res.json() as any;
       set({ 
         posts: data.posts, 
         total: data.total, 
@@ -73,7 +73,7 @@ export const usePostsStore = create<PostsState>((set, get) => ({
       const res = await fetch(`${API_BASE}/api/posts/${slug}`);
       if (!res.ok) throw new Error('Post not found');
 
-      const data = await res.json();
+      const data = await res.json() as any;
       set({ currentPost: data, isLoading: false });
     } catch (error: any) {
       set({ error: error.message, isLoading: false });
@@ -92,7 +92,7 @@ export const usePostsStore = create<PostsState>((set, get) => ({
     });
 
     if (!res.ok) throw new Error('Failed to create post');
-    return await res.json();
+    return await res.json() as any;
   },
 
   updatePost: async (id: string, data: Partial<Post>) => {
@@ -107,7 +107,7 @@ export const usePostsStore = create<PostsState>((set, get) => ({
     });
 
     if (!res.ok) throw new Error('Failed to update post');
-    return await res.json();
+    return await res.json() as any;
   },
 
   deletePost: async (id: string) => {
