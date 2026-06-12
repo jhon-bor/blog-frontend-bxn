@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { 
   ArrowLeft, 
@@ -77,9 +77,9 @@ export default function KeywordsPage() {
     }
   }
 
-  useState(() => {
+  useEffect(() => {
     loadSuggestions();
-  });
+  }, []);
 
   const topicSuggestions = [
     { topic: 'AI / LLM', color: 'from-purple-500 to-pink-500', angle: '工具测评、教程、趋势分析', keywords: ['ChatGPT', 'Claude', 'Midjourney', 'AI编程', 'LLM应用'] },
